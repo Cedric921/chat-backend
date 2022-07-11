@@ -32,9 +32,9 @@ const server = app.listen(process.env.PORT, () => {
 //real times
 const io = socket(server, {
 	cors: {
-		origin: 'http://localhost:3000',
+		origin: 'https://chat-beryl-five.vercel.app',
 		credentials: true,
-	}
+	},
 });
 
 global.onlineUsers = new Map();
