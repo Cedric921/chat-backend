@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const socket = require('socket.io')
+const socket = require('socket.io');
 const userRoutes = require('./routes/userRoute');
 const messageRoutes = require('./routes/messageRoutes');
 
@@ -13,7 +13,7 @@ app.use(express.json());
 
 //routes
 app.use('/api/auth', userRoutes);
-app.use('/api/messages', messageRoutes)
+app.use('/api/messages', messageRoutes);
 
 mongoose
 	.connect(process.env.MONGO_URL, {
@@ -39,16 +39,16 @@ const io = socket(server, {
 
 global.onlineUsers = new Map();
 
-io.on("connection", socket => {
+io.on('connection', (socket) => {
 	global.chatSocket = socket;
-	socket.on("add-user", userId => {
-		onlineUsers.set(userId, socket.id)
-	})
+	socket.on('add-user', (userId) => {
+		onlineUsers.set(userId, socket.id);
+	});
 
-	socket.on('send-msg', data => {
+	socket.on('send-msg', (data) => {
 		const sendUserSocket = onlineUsers.get(data.to);
 		if (sendUserSocket) {
 			socket.to(sendUserSocket).emit('msg-receive', data.message);
 		}
-	})
-})
+	});
+});
